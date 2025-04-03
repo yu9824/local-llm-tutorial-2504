@@ -42,30 +42,52 @@ ollama --version
 ```
 
 
-### モデルのダウンロード
+### モデルのダウンロード～実行
+
+#### モデルのダウンロード
 
 [各種サイト](https://swallow-llm.github.io/evaluation/index.ja.html)を参考に性能の良さそう／サイズが小さそう なモデルを探す。主要なモデルはollamaでダウンロードできるらしいが、オフラインインストールできるようにするため、自分でダウンロードする方法を覚える。
 
 Hugging Faceからファイルをダウンロード。`tokyotech-llm-Llama-3.1-Swallow-8B-Instruct-v0.3-Q5_K_M.gguf` にした。
 - https://huggingface.co/mmnga/tokyotech-llm-Llama-3.1-Swallow-8B-Instruct-v0.3-gguf/tree/main
 
-### モデルの作成・実行
+#### モデルの定義
+
+Modelfileで、モデルを定義する。
+
+```plaintext
+FROM ./tokyotech-llm-Llama-3.1-Swallow-8B-Instruct-v0.3-Q5_K_M.gguf
+
+# set the temperature to 0 [higher is more creative, lower is more coherent]
+PARAMETER temperature 0.7
+
+SYSTEM "You are a helpful AI assistant."
+
+```
 
 ```bash
-# モデルの作成
-ollama create swallow-8b -f ./Modelfile # swallow-8b 部分がモデル名
+# モデルの定義
+ollama create Llama-3.1-Swallow-8B -f ./Modelfile # Llama-3.1-Swallow-8B 部分がモデル名
+```
 
+#### (ターミナル上での) 実行
+
+```bash
 # モデルの実行
-ollama run swallow-8b
+ollama run Llama-3.1-Swallow-8B
 
 # プロンプトから抜けるとき
 /bye
 ```
 
-### （インターネットにつながる場合）モデルのダウンロード～実行
+#### 【参考】（インターネットにつながる場合）モデルのダウンロード～実行
 
 ```bash
+# ダウンロード・実行
 ollama run hf.co/mmnga/tokyotech-llm-Llama-3.1-Swallow-8B-Instruct-v0.3-gguf
+
+# プロンプトから抜けるとき
+/bye
 ```
 
 ### open-webuiのインストール
@@ -76,12 +98,19 @@ conda activate open-webui
 python3 -m pip install open-webui
 ```
 
+### open-webuiの起動
+
+`ollama serve` してある状態で、下記のコマンドを実行する。
+
 ```bash
+# モデルを探しに行かないようにする
+# 参考: https://github.com/open-webui/open-webui?tab=readme-ov-file#offline-mode
+export HF_HUB_OFFLINE=1
 # サーバーを建てる
-open-webui serve --port 8080
+open-webui serve --port 3000    # デフォルトは8080。
 ```
 
-ブラウザで http://localhost:8080 にアクセスすると使える！
+ブラウザで http://localhost:3000 にアクセスすると使える！
 
 よくわからないけれど、ollamaのモデルも勝手に認識してくれた。
 認識してくれてないときは、「設定」＞「接続」＞「Ollama API」から `http://localhost:11434` を追加すれば良さそう。
@@ -89,7 +118,7 @@ open-webui serve --port 8080
 sshで接続した先でサーバーを建てた場合は、ポートフォアワーディングしてやればよい。
 
 ```bash
-ssh username@hostname -L 8080:localhost:8080
+ssh username@hostname -L 3000:localhost:3000
 ```
 
 ## 参考
