@@ -1,4 +1,4 @@
-FROM ./tokyotech-llm-Llama-3.1-Swallow-8B-Instruct-v0.3-Q5_K_M.gguf
+FROM ./gguf/tokyotech-llm-Llama-3.1-Swallow-8B-Instruct-v0.3-Q5_K_M.gguf
 
 # set the temperature to 0 [higher is more creative, lower is more coherent]
 # PARAMETER temperature 0.7
