@@ -1,6 +1,7 @@
 *.gguf
 .webui_secret_key
-ollama/models/
+ollama/models/*
+!ollama/models/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
